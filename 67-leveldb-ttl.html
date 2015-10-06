@@ -16,7 +16,7 @@
   06 Oct - 2015 added TTL, Readers and Batch support. by min0n
 -->
 
-<script type="text/x-red" data-template-name="leveldbase">
+<script type="text/x-red" data-template-name="leveldbttlbase">
     <div class="form-row">
         <label for="node-config-input-db"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-config-input-db" placeholder="database path/name">
@@ -34,7 +34,7 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldbase',{
+    RED.nodes.registerType('leveldbttlbase',{
         category: 'config',
         defaults: {
             db: {value:"",required:true},
@@ -47,7 +47,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="leveldb in">
+<script type="text/x-red" data-template-name="leveldb-ttl in">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -58,7 +58,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="leveldb in">
+<script type="text/x-red" data-help-name="leveldb-ttl in">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
     <p>Use this node to <b>get</b>, or retrieve the data already saved in the database.</p>
     <p><b>msg.topic</b> must hold the <i>key</i> for the database, and the result is returned in <b>msg.payload</b>.</p>
@@ -66,11 +66,11 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb in',{
+    RED.nodes.registerType('leveldb-ttl in',{
         category: 'storage-input',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             name: {value:""}
         },
         inputs:1,
@@ -87,7 +87,7 @@
 </script>
 
 
-<script type="text/x-red" data-template-name="leveldb out">
+<script type="text/x-red" data-template-name="leveldb-ttl out">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -112,18 +112,18 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="leveldb out">
+<script type="text/x-red" data-help-name="leveldb-ttl out">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
     <p>Use this node to either <b>put</b> (store) the <b>msg.payload</b> to the named database file, using <b>msg.topic</b> as the key. Optionally <b>msg.tll</b> overrides node ttl, or the default ttl, if any. </p>
     <p>To <b>delete</b> information select delete in the properties dialogue and again use <b>msg.topic</b> as the key.</b>.</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb out',{
+    RED.nodes.registerType('leveldb-ttl out',{
         category: 'storage-output',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             operation: {value:"store"},
             name: {value:""},
             nodettl: {value:0,required:true,validate:RED.validators.number()}, //Overrides default TTL if any. 0-disable node TTL. 
@@ -146,7 +146,7 @@
 06 Oct 2015: new nodes added 
 -->
 
-<script type="text/x-red" data-template-name="leveldb stream">
+<script type="text/x-red" data-template-name="leveldb-ttl stream">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -169,7 +169,7 @@
 
 
 
-<script type="text/x-red" data-help-name="leveldb stream">
+<script type="text/x-red" data-help-name="leveldb-ttl stream">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
      <p>Use this node to <a href="https://github.com/Level/levelup#dbcreatereadstreamoptions" target="_new"><i>obtain a ReadStream, KeyStream or ValueStream</i></a> of the database.</p>
     <p><b>msg.payload</b> can hold the <i>options object</i> to control the range of keys that are streamed, and the results are returned in <b>msg.payload</b>. If no options are passed, then all the database is streamed.</p>
@@ -178,11 +178,11 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb stream',{
+    RED.nodes.registerType('leveldb-ttl stream',{
         category: 'storage-input',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             stype: {value:"read"},
             name: {value:""}
         },
@@ -199,7 +199,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="leveldb keyttl">
+<script type="text/x-red" data-template-name="leveldb-ttl keyttl">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -224,18 +224,18 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="leveldb keyttl">
+<script type="text/x-red" data-help-name="leveldb-ttl keyttl">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
     <p>This node can serve to insert or update a ttl for any given key from <b>msg.topic</b> in the database (even if that key doesn't exist but may in the future as described at <a href="https://github.com/Level/level-ttl" target="_new"><i>LevelDB-TTL</i></a> </p>
     <p>Node TTL can be overriden by passing <b>msg.ttl</b></p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb keyttl',{
+    RED.nodes.registerType('leveldb-ttl keyttl',{
         category: 'storage-output',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             operation: {value:"store"},
             name: {value:""},
             nodettl: {value:0,required:true,validate:RED.validators.number()}, //Overrides default TTL if any. 0-disable key TTL. 
@@ -255,7 +255,7 @@
 </script>
 
 
-<script type="text/x-red" data-template-name="leveldb batchout">
+<script type="text/x-red" data-template-name="leveldb-ttl batchout">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -273,18 +273,18 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="leveldb batchout">
+<script type="text/x-red" data-help-name="leveldb-ttl batchout">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
     <p>Use this node to <b>batch</b>the <b>msg.payload</b> array object to the named database. The array batch object is described at <a href="https://github.com/Level/levelup#dbbatcharray-options-callback-array-form" target="_new"><i>levelup docs</i></a>. Optionally <b>msg.tll</b> overrides node ttl, or the default ttl, if any. </p>
     <p>example of batch object: msg.payload = [{type:'del', key: 'k1'}, {type:'put', key: 'k2' , value: 'v2'}]</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb batchout',{
+    RED.nodes.registerType('leveldb-ttl batchout',{
         category: 'storage-output',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             name: {value:""},
             nodettl: {value:0,required:true,validate:RED.validators.number()}, //Overrides default TTL if any. 0-disable node TTL. 
         },
@@ -304,7 +304,7 @@
 
 
 
-<script type="text/x-red" data-template-name="leveldb batchout2">
+<script type="text/x-red" data-template-name="leveldb-ttl batchout2">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
         <input type="text" id="node-input-level">
@@ -325,18 +325,18 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="leveldb batchout2">
+<script type="text/x-red" data-help-name="leveldb-ttl batchout2">
     <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
     <p>This node keeps in memory <i>batchsize</i> msg.payloads before doing the batch operation to the database. The array batch object is described at <a href="https://github.com/Level/levelup#dbbatcharray-options-callback-array-form" target="_new"><i>levelup docs</i></a>.</p>
     <p>example of msg.payload = {type:'put', key: 'k2' , value: 'v2'}</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('leveldb batchout2',{
+    RED.nodes.registerType('leveldb-ttl batchout2',{
         category: 'storage-output',
         color:"#dbb84d",
         defaults: {
-            level: {type:"leveldbase",required:true},
+            level: {type:"leveldbttlbase",required:true},
             name: {value:""},
             batchsize: {value:1,required:true,validate:RED.validators.number()}, //number of msg to keep before doing the batch
             nodettl: {value:0,required:true,validate:RED.validators.number()}, //Overrides default TTL if any. 0-disable node TTL. 

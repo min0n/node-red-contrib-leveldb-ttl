@@ -43,7 +43,7 @@ module.exports = function(RED) {
             }
         });
     }
-    RED.nodes.registerType("leveldb-ttlase",LevelNode);
+    RED.nodes.registerType("leveldbttlbase",LevelNode);
 
 
     function LevelDBNodeIn(n) {
