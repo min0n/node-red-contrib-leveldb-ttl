@@ -43,7 +43,7 @@ module.exports = function(RED) {
             }
         });
     }
-    RED.nodes.registerType("leveldbase",LevelNode);
+    RED.nodes.registerType("leveldb-ttlase",LevelNode);
 
 
     function LevelDBNodeIn(n) {
@@ -71,7 +71,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb in",LevelDBNodeIn);
+    RED.nodes.registerType("leveldb-ttl in",LevelDBNodeIn);
 
 
     function LevelDBNodeOut(n) {
@@ -115,7 +115,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb out",LevelDBNodeOut);
+    RED.nodes.registerType("leveldb-ttl out",LevelDBNodeOut);
     
     
     
@@ -169,7 +169,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb stream",LevelDBNodeStream);
+    RED.nodes.registerType("leveldb-ttl stream",LevelDBNodeStream);
 
     function LevelDBNodeKeyTTL(n) {
         RED.nodes.createNode(this,n);
@@ -202,7 +202,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb keyttl",LevelDBNodeKeyTTL);
+    RED.nodes.registerType("leveldb-ttl keyttl",LevelDBNodeKeyTTL);
 
     
      function LevelDBNodeBatchOut(n) {
@@ -231,7 +231,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb batchout",LevelDBNodeBatchOut);
+    RED.nodes.registerType("leveldb-ttl batchout",LevelDBNodeBatchOut);
     
     function LevelDBNodeBatchOut2(n) {
         RED.nodes.createNode(this,n);
@@ -269,7 +269,7 @@ module.exports = function(RED) {
             else { node.error("Database not ready",msg); }
         });
     }
-    RED.nodes.registerType("leveldb batchout2",LevelDBNodeBatchOut2);
+    RED.nodes.registerType("leveldb-ttl batchout2",LevelDBNodeBatchOut2);
     
     
 }
