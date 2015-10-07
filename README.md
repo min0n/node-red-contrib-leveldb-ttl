@@ -27,7 +27,9 @@ Again use <b>msg.topic</b> to hold the <i>key</i> for the database, and the resu
 
 ---
 
-06 Oct 2015 node-red-contrib-leveldb-ttl
+06 Oct 2015 - node-red-contrib-leveldb-ttl
+------------------------------------------
+
 
 This is a quick and dirty package to add <a href="https://github.com/Level/level-ttl" target="_new"><i>Level-ttl</i></a> support to the original <a href="https://github.com/node-red/node-red-nodes/tree/master/storage/leveldb" target="_new"><i>node-red-node-leveldb</i></a> code (version 0.0.5), and to wrap some <a href="https://github.com/Level/levelup" target="_new"><i>Levelup</i></a> functions, like batch and streams.
 
