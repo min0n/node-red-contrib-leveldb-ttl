@@ -154,8 +154,8 @@
     <div class="form-row">
         <label for="node-input-stype"><i class="fa fa-wrench"></i> Stream type</label>
         <select type="text" id="node-input-stype" style="display: inline-block; vertical-align: top;">
-            <option value="key">KeyStream</option>
-            <option value="value">ValueStream</option>
+            <option value="keys">KeyStream</option>
+            <option value="values">ValueStream</option>
             <option value="read">ReadStream</option>
         </select>
     </div>
@@ -198,6 +198,58 @@
         }
     });
 </script>
+
+
+<script type="text/x-red" data-template-name="leveldb-ttl stream2">
+    <div class="form-row node-input-level">
+        <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
+        <input type="text" id="node-input-level">
+    </div>
+    <div class="form-row">
+        <label for="node-input-stype"><i class="fa fa-wrench"></i> Stream type</label>
+        <select type="text" id="node-input-stype" style="display: inline-block; vertical-align: top;">
+            <option value="keys">KeyStream</option>
+            <option value="values">ValueStream</option>
+            <option value="read">ReadStream</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-tips" id="nodestype-tip"><span>The ReadStream type includes keys and values.</span></div>
+    <div class="form-tips" id="nodestype-tip2"><span>The stream type can be overriden by msg.payload</span></div>
+</script>
+
+
+
+<script type="text/x-red" data-help-name="leveldb-ttl stream2">
+    <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
+    <p>This node returns just one msg.payload with all the results<p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('leveldb-ttl stream2',{
+        category: 'storage-input',
+        color:"#dbb84d",
+        defaults: {
+            level: {type:"leveldbttlbase",required:true},
+            stype: {value:"read"},
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "leveldb.png",
+        label: function() {
+            var levelNode = RED.nodes.node(this.level);
+            return this.name||(levelNode?levelNode.label():"leveldb");
+        },
+            labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
+
 
 <script type="text/x-red" data-template-name="leveldb-ttl keyttl">
     <div class="form-row node-input-level">

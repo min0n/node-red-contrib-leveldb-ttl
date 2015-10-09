@@ -131,13 +131,14 @@ module.exports = function(RED) {
         node.on("input", function(msg) {
             if (node.levelConfig && node.levelConfig.ready) {
                 var options = msg.payload || {};
-                
-                var values = (node.stype != "key");
-                var keys = (node.stype != "value");
+ 
+                var values = !(node.stype === "keys");
+                var keys = !(node.stype === "values");
                 
                 //override node stream type 
                 options.values = options.hasOwnProperty('values') ? options.values : values ;
                 options.keys = options.hasOwnProperty('keys') ? options.keys : keys ;
+		
                     
                 if (options.values && options.keys)//(node.stype == "read")
                 {
@@ -151,16 +152,17 @@ module.exports = function(RED) {
                 {
                     var keyStream =  node.levelConfig.db.createKeyStream(options);
                     keyStream.on('data',function (data) {
-                        //msg.topic = data.key;
-                        msg.payload = data.key;
+                        //msg.topic = data.key; //bug!!
+                        msg.payload = data;
                         node.send(msg);
                     });
                 }else //if (node.stype == "value")
                 {
                     var valueStream =  node.levelConfig.db.createValueStream(options);
                     valueStream.on('data',function (data) {
-                        //msg.topic = data.key;
-                        msg.payload = data.value;
+			console.log('data=',data);
+                        //msg.topic = data.key; //bug!!
+                        msg.payload = data;
                         node.send(msg);
                     });
                 
@@ -170,6 +172,87 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("leveldb-ttl stream",LevelDBNodeStream);
+
+
+//send all msg at the end ... for http get api/thing/list 
+    function LevelDBNodeStream2(n) {
+        RED.nodes.createNode(this,n);
+        this.level = n.level;
+        this.stype = n.stype;
+        this.levelConfig = RED.nodes.getNode(this.level);
+
+        var node = this;
+        node.on("input", function(msg) {
+            if (node.levelConfig && node.levelConfig.ready) {
+                var options = msg.payload || {};
+                
+                var values = !(node.stype === "keys");
+                var keys = !(node.stype === "values");
+		var msgs = [];
+                
+                //override node stream type 
+                options.values = options.hasOwnProperty('values') ? options.values : values ;
+                options.keys = options.hasOwnProperty('keys') ? options.keys : keys ;
+                    
+                if (options.values && options.keys)//(node.stype == "read")
+                {
+                    var readStream =  node.levelConfig.db.createReadStream(options);
+                    readStream.on('data',function (data) {
+			var m = {};
+                        m.topic = data.key;
+                        m.payload = data.value;
+//                        node.send(msg);
+//			console.log('m dice ',m);
+			msgs.push(m);
+                    });
+		    readStream.on('end', function () {
+//			console.log('Stream closed');
+			msg.payload = msgs;
+			node.send(msg);
+  		   });
+                }else if (options.keys)
+                {
+                    var keyStream =  node.levelConfig.db.createKeyStream(options);
+                    keyStream.on('data',function (data) {
+			var m = {};
+///		console.log('data dice = ',data);
+                        //msg.topic = data.key;
+                        m.payload = data;
+//                        node.send(msg);
+//			console.log('m dice ',m);
+			msgs.push(m);
+                    });
+		    keyStream.on('end', function () {
+//			console.log('Stream closed');
+			msg.payload = msgs;
+			node.send(msg);
+  		   });
+                }else //if (node.stype == "value")
+                {
+                    var valueStream =  node.levelConfig.db.createValueStream(options);
+                    valueStream.on('data',function (data) {
+			var m = {};
+			//console.log('data dice = ',data);
+                        //msg.topic = data.key;
+                        m.payload = data;
+//			console.log('m dice ',m);
+                        //node.send(msg);
+			msgs.push(m);
+                    });
+		    valueStream.on('end', function () {
+//			console.log('Stream closed');
+			msg.payload = msgs;
+			node.send(msg);
+  		   });
+                
+                }
+            }
+            else { node.error("Database not ready",msg); }
+        });
+    }
+    RED.nodes.registerType("leveldb-ttl stream2",LevelDBNodeStream2);
+
+
 
     function LevelDBNodeKeyTTL(n) {
         RED.nodes.createNode(this,n);

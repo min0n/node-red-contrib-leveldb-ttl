@@ -40,6 +40,7 @@ msg.payload = {
     start: 'key1~',
     end: 'key1~~'
 }
+<b>Stream2</b> node: it returns all results in one message.
 
 <b>Batch</b> node: can be used for very fast bulk-write operations (both put and delete). <b>msg.payload</b> should contain a list of operations to be executed sequentially, although as a whole they are performed as an atomic operation inside LevelDB. 
 Example:
